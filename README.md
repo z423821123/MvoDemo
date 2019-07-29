@@ -7,3 +7,26 @@
 4.大大减少Actvity的代码,如果你经历过一个类里面有几千行代码你就能深深体会到这一点好处,这点没什么好说的,比较浅显.    
 缺点也很明显  
 1.增加代码量以及新建大量的接口,所以自己写了一个MVP类和接口生成插件分享给大家.  
+
+
+再次用泛型封装了部分代码  
+1.删除Activity中抽象方法createPresenter实例createPresenter  
+在基类中用反射获取泛型实现类,构造一个presenter实例 同理Model也做了调整  
+presenter实例通过Activity中的getPresenter()方法获得, model实例通过presenter中的getModel()方法获得  
+protected T createPresenter(){
+        try {
+            Type superClass = getClass().getGenericSuperclass();
+            Type type = ((ParameterizedType) superClass).getActualTypeArguments()[1];
+            Class<?> clazz = getRawType(type);
+            return (T) clazz.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+}
+
+2.数据回调类使用泛型声明,在实例回调接口时声明具体实体类即可,不用重复创建多个重复的回调类  
+public interface callBackListener<T>{
+    void onSuccess(T data);
+    void onError(String msg);
+}
