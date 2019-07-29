@@ -13,20 +13,20 @@
 1.删除Activity中抽象方法createPresenter实例createPresenter  
 在基类中用反射获取泛型实现类,构造一个presenter实例 同理Model也做了调整  
 presenter实例通过Activity中的getPresenter()方法获得, model实例通过presenter中的getModel()方法获得  
-protected T createPresenter(){
-        try {
-            Type superClass = getClass().getGenericSuperclass();
-            Type type = ((ParameterizedType) superClass).getActualTypeArguments()[1];
-            Class<?> clazz = getRawType(type);
-            return (T) clazz.newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-}
+protected T createPresenter(){  
+        try {  
+            Type superClass = getClass().getGenericSuperclass();  
+            Type type = ((ParameterizedType) superClass).getActualTypeArguments()[1];  
+            Class<?> clazz = getRawType(type);  
+            return (T) clazz.newInstance();  
+        } catch (Exception e) {  
+            e.printStackTrace();  
+        }  
+        return null;  
+}  
 
 2.数据回调类使用泛型声明,在实例回调接口时声明具体实体类即可,不用重复创建多个重复的回调类  
-public interface callBackListener<T>{
-    void onSuccess(T data);
-    void onError(String msg);
-}
+public interface callBackListener<T>{  
+    void onSuccess(T data);  
+    void onError(String msg);  
+}  
